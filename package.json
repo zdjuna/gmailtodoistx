@@ -12,7 +12,7 @@
     "postinstall": "npm run build"
   },
   "engines": {
-    "node": "16.x"
+    "node": "18.x"
   },
   "keywords": [
     "gmail",
@@ -32,10 +32,10 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.10.2",
     "@doist/todoist-api-typescript": "^4.0.0",
     "@google-cloud/local-auth": "^3.0.1",
     "@google-cloud/secret-manager": "^6.0.1",
-    "anthropic": "^0.0.0",
     "dotenv": "^16.5.0",
     "googleapis": "^148.0.0",
     "html-to-text": "^9.0.5",
