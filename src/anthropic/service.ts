@@ -2,8 +2,7 @@ import config from '../config';
 import logger from '../logger';
 import { ProcessedEmail } from '../email/processor';
 import { retry } from '../utils/retry';
-
-const Anthropic = require('anthropic').Anthropic;
+import { Anthropic } from '@anthropic-ai/sdk';
 
 export interface AnalysisResult {
   taskTitle: string;
@@ -11,7 +10,7 @@ export interface AnalysisResult {
 }
 
 export class AnthropicService {
-  private client: any;
+  private client: Anthropic;
   
   constructor() {
     this.client = new Anthropic({
@@ -29,21 +28,15 @@ export class AnthropicService {
       const prompt = this.createPrompt(email);
       
       const response = await retry(async () => {
-        return this.client.messages.create({
+        return this.client.completions.create({
           model: config.anthropic.model,
-          max_tokens: config.anthropic.maxTokens,
+          max_tokens_to_sample: config.anthropic.maxTokens,
           temperature: config.anthropic.temperature,
-          system: "You are a helpful assistant that analyzes emails and extracts tasks.",
-          messages: [
-            {
-              role: "user",
-              content: prompt,
-            },
-          ],
+          prompt: `\n\nHuman: ${prompt}\n\nAssistant:`,
         });
       }, 3);
       
-      const taskTitle = response.content[0].text.trim();
+      const taskTitle = response.completion.trim();
       
       logger.info(`Generated task title: ${taskTitle}`);
       
