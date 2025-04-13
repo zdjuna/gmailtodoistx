@@ -1,0 +1,48 @@
+name: Deploy to Google Cloud Storage
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Build
+      run: npm run build
+    
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
+      with:
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        export_default_credentials: true
+    
+    - name: Deploy to Cloud Run
+      uses: google-github-actions/deploy-cloudrun@v1
+      with:
+        service: gmail-todoist-app
+        region: europe-west3
+        source: .
+        env_vars: |
+          ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}
+          TODOIST_API_KEY=${{ secrets.TODOIST_API_KEY }}
+          ANTHROPIC_MODEL=claude-3-7-sonnet-20250219
+          POLLING_INTERVAL=300
+          LOG_LEVEL=info
+    
+    - name: Show deployed service URL
+      run: gcloud run services describe gmail-todoist-app --region europe-west3 --format 'value(status.url)'
