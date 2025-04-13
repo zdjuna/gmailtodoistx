@@ -1,0 +1,42 @@
+{
+  "name": "Gmail-Todoist App",
+  "description": "Application that monitors Gmail for starred emails, processes them with Anthropic Claude, and creates Todoist tasks",
+  "repository": "https://github.com/your-username/gmail-todoist-app",
+  "logo": "https://node-js-sample.herokuapp.com/node.png",
+  "keywords": ["node", "gmail", "todoist", "anthropic", "claude", "email", "automation"],
+  "env": {
+    "ANTHROPIC_API_KEY": {
+      "description": "Your Anthropic API key",
+      "required": true
+    },
+    "TODOIST_API_KEY": {
+      "description": "Your Todoist API token",
+      "required": true
+    },
+    "POLLING_INTERVAL": {
+      "description": "How often to check for new emails (in seconds)",
+      "value": "300",
+      "required": false
+    },
+    "ANTHROPIC_MODEL": {
+      "description": "Anthropic Claude model to use",
+      "value": "claude-3-sonnet-20240229",
+      "required": false
+    },
+    "LOG_LEVEL": {
+      "description": "Logging level (info, debug, error)",
+      "value": "info",
+      "required": false
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "addons": [
+    {
+      "plan": "scheduler:standard"
+    }
+  ]
+}

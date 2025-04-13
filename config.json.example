@@ -1,0 +1,24 @@
+{
+  "gmail": {
+    "credentialsPath": "./credentials.json",
+    "tokenPath": "./token.json",
+    "scopes": [
+      "https://www.googleapis.com/auth/gmail.readonly",
+      "https://www.googleapis.com/auth/gmail.modify"
+    ],
+    "pollingInterval": 60000
+  },
+  "anthropic": {
+    "apiKey": "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",
+    "model": "claude-3-7-sonnet-20250219",
+    "maxTokens": 4096,
+    "temperature": 0.7
+  },
+  "todoist": {
+    "apiKey": "27ec679990c9c3d23d94a416f60e2609efef6503"
+  },
+  "app": {
+    "logLevel": "info",
+    "logFile": "./app.log"
+  }
+}
